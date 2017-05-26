@@ -36,8 +36,20 @@ end
   )
 end
 
+#Create SponsoredPosts
+20.times do
+  Sponsoredpost.create!(
+    title: RandomData.random_sentence,
+    body: RandomData.random_paragraph,
+    price: RandomData.random_integer
+  )
+end
+
+sponsored_posts = SponsoredPost.all
+
 puts "Seed finished"
 puts "#{Post.count} posts created"
 puts "#{Comment.count} comments created"
 puts "#{Question.count} questions created"
 puts "#{Topic.count} topics created"
+puts "#{SponsoredPost.count} sponsor_posts created"
