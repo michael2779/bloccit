@@ -3,11 +3,13 @@ class VotesController < ApplicationController
 
     def up_vote
         update_vote(1)
+        puts "THIS HAS RUN"
         redirect_to request.referer
     end
 
     def down_vote
         update_vote(-1)
+        puts "THIS DOWNER"
         redirect_to request.referer
     end
 
