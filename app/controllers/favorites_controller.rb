@@ -1,30 +1,31 @@
 class FavoritesController < ApplicationController
+    before_action :require_sign_in
 
-  before_action :require_sign_in
+    def create
+        post = Post.find(params[:post_id])
+        favorite = current_user.favorites.build(post: post)
+        # why build and not create?
 
-  def create
-    post = Post.find(params[:post_id])
-    favorite = current_user.favorites.build(post: post)
+        if favorite.save
+            flash[:notice] = "Post favorited."
+        else
+            flash[:alert] = "Favoriting failed."
+        end
 
-    if favorite.save
-      flash[:notice] = "Post favorited."
-    else
-      flash[:alert] = "Favoriting failed."
+        redirect_to [post.topic, post]
     end
 
-    redirect_to [post.topic, post]
-  end
-
     def destroy
-       post = Post.find(params[:post_id])
-       favorite = current_user.favorites.find(params[:id])
+        post = Post.find(params[:post_id])
+        favorite = current_user.favorites.find(params[:id])
 
-       if favorite.destroy
-         flash[:notice] = "Post unfavorited."
-       else
-         flash[:alert] = "Unfavoriting failed."
-       end
-         redirect_to [post.topic, post]
-     end
+        if favorite.destroy
+            flash[:notice] = 'Post unfavorited.'
+        else
+            flash[:alert] = 'Unfavoriting failed.'
+        end
+
+        redirect_to [post.topic, post]
+    end
 
 end

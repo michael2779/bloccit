@@ -4,8 +4,8 @@ class Post < ApplicationRecord
   has_many :comments, dependent: :destroy
   has_many :votes, dependent: :destroy
   has_many :favorites, dependent: :destroy
-
   after_create :create_vote
+  after_create :create_favorite
 
   default_scope { order('rank DESC') }
 
@@ -41,4 +41,8 @@ private
     user.votes.create(value: 1,post:self)
   end
 
+  def create_favorite
+    self.favorites.create!(user: user)
+    FavoriteMailer.new_post(user, self).deliver_now
+  end
 end
